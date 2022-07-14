@@ -1,0 +1,8 @@
+.wrapper {
+    min-height: 100vh;
+    background: linear-gradient(to right, rgba(255, 255, 0, 0.673), rgba(0, 128, 0, 0.605));
+}
+
+.saving {
+    transform: translateX();
+}

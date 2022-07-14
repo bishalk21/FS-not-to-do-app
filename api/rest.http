@@ -1,0 +1,35 @@
+### root.http is for the http server that is running on the server and helps to communicate with the server and the client
+### CRUD is for create, read, update, delete
+### fetch. data from the server
+GET http://localhost:8000/api/v1/task/
+
+### add task to the server
+POST  http://localhost:8000/api/v1/task/
+Content-Type: application/json
+
+{
+    "task": "do the dishes",
+    "hours":"12"
+}
+
+### root api 
+GET   http://localhost:8000/
+
+### update task 
+PATCH http://localhost:8000/api/v1/task
+Content-Type: application/json
+
+{
+   "_id": "62c66ca02046290138ad9398",
+   "type": "bad"
+}
+
+### delete task 
+DELETE http://localhost:8000/api/v1/task/
+Content-Type: application/json
+
+{
+   "ids": [
+ "62ce2837752c858a3b85d241"
+   ]
+}
