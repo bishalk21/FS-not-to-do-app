@@ -1,5 +1,5 @@
 import "./App.css";
-import { Container } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import { AddTaskForm } from "./components/AddTaskForm";
 import { ListArea } from "./components/ListArea";
 import { useState } from "react";
@@ -50,6 +50,70 @@ function App() {
     setTasksList(switchArr);
   };
 
+  // state for checkbox and selecting item in task list and deleting according to the checked item
+  // - we get ids from the task list according to list being checked or selected by creating function in main comp.
+  // - we pass the function to tasklist as props
+  // - function to delete the checked item in main comp
+  // - we pass the function to tasklist as props
+  // - we pass the ids to the function in main comp
+
+  const [ids, setIds] = useState([]);
+
+  // function to handle checkbox
+  const handleCheckbox = (e) => {
+    const { checked, name, value } = e.target;
+    // console.log(checked, name, value);
+
+    if (value === "entry" || value === "bad") {
+      // if checked then add the id to ids otherwise take them out
+      // add all entry list ids
+      // filter id returns whole item while
+      // map returns only id and
+      // reduce returns only one id and
+      // find returns only one id a
+      let deleteIds = [];
+      tasksList.forEach((item) => {
+        if (item.type === value) {
+          // return item.id;
+          deleteIds.push(item.id);
+        }
+      });
+      if (checked) {
+        // console.log(entryIds);
+
+        setIds([...ids, ...deleteIds]);
+      } else {
+        // remove all entry list ids
+        // console.log("remove");
+        const tempArrIds = ids.filter((id) => !deleteIds.includes(id));
+        setIds(tempArrIds);
+      }
+      return;
+    }
+
+    // if checked then add the id to ids otherwise take them out
+    if (checked) {
+      // add invidual ids
+      setIds([...ids, value]);
+    } else {
+      // remove individual ids
+      const tempArrIds = ids.filter((id) => id !== value);
+      setIds(tempArrIds);
+    }
+  };
+
+  // delete function
+  const deleteTask = () => {
+    // confirm
+    if (!window.confirm("Are you sure you want to delete?")) {
+      return;
+    }
+
+    const tempArr = tasksList.filter((item) => !ids.includes(item.id));
+    setTasksList(tempArr);
+    setIds([]);
+  };
+
   return (
     <div className="wrapper">
       <Container>
@@ -63,7 +127,22 @@ function App() {
           tasksList={tasksList}
           switchTask={switchTask}
           totalHours={totalHours}
+          handleCheckbox={handleCheckbox}
+          ids={ids}
         />
+
+        {/* Ddelete button only on item select to delete */}
+        <div className="mt-3">
+          {ids.length > 0 && (
+            <Button
+              variant="danger"
+              className="float-right"
+              onClick={deleteTask}
+            >
+              Delete Selected Task
+            </Button>
+          )}
+        </div>
       </Container>
     </div>
   );

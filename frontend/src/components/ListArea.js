@@ -2,7 +2,13 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { TaskList } from "./TaskList";
 
-export const ListArea = ({ tasksList, switchTask, totalHours }) => {
+export const ListArea = ({
+  tasksList,
+  switchTask,
+  totalHours,
+  handleCheckbox,
+  ids,
+}) => {
   // after we recieve the tasklist from app.js, now we have to filter entry list and bad list - filter method
   //   const entryList = tasksList.filter((item) => item.type === "entry");
   const entryList = tasksList.filter(({ type }) => type === "entry");
@@ -23,8 +29,11 @@ export const ListArea = ({ tasksList, switchTask, totalHours }) => {
           <TaskList
             title="Entry List"
             arrow="right"
+            name="entry"
             list={entryList}
             switchTask={switchTask}
+            handleCheckbox={handleCheckbox}
+            ids={ids}
           />
         </Col>
 
@@ -33,7 +42,10 @@ export const ListArea = ({ tasksList, switchTask, totalHours }) => {
           <TaskList
             title="Bad Task List"
             list={badList}
+            name="bad"
             switchTask={switchTask}
+            handleCheckbox={handleCheckbox}
+            ids={ids}
           />
           <div className="text-end mt-2">
             You could have
