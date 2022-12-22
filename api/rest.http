@@ -1,0 +1,7 @@
+### three hash to activate the api
+
+### root api
+GET http://localhost:8000/
+
+### root api
+POST http://localhost:8000/
