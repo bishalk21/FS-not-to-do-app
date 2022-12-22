@@ -3,5 +3,25 @@
 ### root api
 GET http://localhost:8000/
 
-### root api
-POST http://localhost:8000/
+### fetch all task api
+GET http://localhost:8000/api/v1/task/
+
+### add new task api
+POST http://localhost:8000/api/v1/task
+Content-Type: application/json
+
+{
+    "task": "Netflix",
+    "hours": 5
+}
+
+### update OR Switch task api
+PATCH  http://localhost:8000/api/v1/task
+
+### delete task api
+DELETE http://localhost:8000/api/v1/task/
+Content-Type: application/json
+
+{
+    "_id": 3
+}
