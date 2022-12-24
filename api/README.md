@@ -69,6 +69,22 @@ let b = parseInt(a);
 
 ## Key Takeaway from this project
 
+## $in operator in mongoose
+
+- $in operator is used to match any of the values specified in an array.
+
+```js
+db.collection.find({ field: { $in: [<value1>, <value2>, ... <valueN> ] } })
+```
+
+## Timestamps: true
+
+Mongoose schemas support a timestamps option. If you set `timestamps: true`, Mongoose will add two properties of type `Date` to your schema:
+
+`createdAt`: a date representing when this document was created
+`updatedAt`: a date representing when this document was last updated
+Mongoose will then set createdAt when the document is first inserted, and update updatedAt whenever you update the document using `save()`, `updateOne()`, `updateMany()`, `findOneAndUpdate()`, `update()`, `replaceOne()`, or `bulkWrite()`.
+
 - Anybody sends data using POST method, Express need sets to be made to convert the data and make available in req.body by injecting some middleware before any respose happens like:
 
 ```js

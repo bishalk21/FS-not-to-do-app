@@ -4,24 +4,34 @@
 GET http://localhost:8000/
 
 ### fetch all task api
-GET http://localhost:8000/api/v1/task/
-
+GET http://localhost:8000/api/v1/task/ 
 ### add new task api
 POST http://localhost:8000/api/v1/task
 Content-Type: application/json
 
 {
-    "task": "Netflix",
+    "task": "Reading",
     "hours": 5
 }
 
 ### update OR Switch task api
 PATCH  http://localhost:8000/api/v1/task
-
-### delete task api
-DELETE http://localhost:8000/api/v1/task/
 Content-Type: application/json
 
 {
-    "_id": 3
+    "_id": "63a6790d9623bcd2345fe41d",
+    "type": "entry"
+}
+
+### delete single task api
+# DELETE http://localhost:8000/api/v1/task/63a6790d9623bcd2345fe41d
+
+### delete all task api
+DELETE http://localhost:8000/api/v1/task
+Content-Type:  application/json
+
+{
+    "ids": [
+        "63a670f08119c991e58a756b"
+    ]
 }
