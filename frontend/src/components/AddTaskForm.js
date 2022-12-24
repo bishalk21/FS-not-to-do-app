@@ -25,7 +25,7 @@ export const AddTaskForm = ({ addTask }) => {
 
   // function to handle form submit and pass the tasks to app
   const handleOnSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // prevent from browser to load
 
     // passing the tasks to app
     addTask({ ...tasks, id: uuidv4() });

@@ -2,13 +2,28 @@ import "./App.css";
 import { Button, Container } from "react-bootstrap";
 import { AddTaskForm } from "./components/AddTaskForm";
 import { ListArea } from "./components/ListArea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchTasks } from "./helpers/axiosHelper";
 
 const weeklyHour = 7 * 24;
 
 function App() {
   // state to store tasklist
   const [tasksList, setTasksList] = useState([]);
+
+  const [ids, setIds] = useState([]);
+
+  // useEffect hook - allow us to execute the code once component completes re-renders
+  useEffect(() => {
+    getTaskServer();
+  }, []);
+
+  // getting task from db
+  const getTaskServer = async () => {
+    const data = await fetchTasks();
+    console.log(data);
+    data.success === "success" && setTasksList(data.result);
+  };
 
   // total hours of all tasklist - reduce
   const totalHours = tasksList.reduce((acc, item) => acc + +item.hours, 0);
@@ -56,8 +71,6 @@ function App() {
   // - function to delete the checked item in main comp
   // - we pass the function to tasklist as props
   // - we pass the ids to the function in main comp
-
-  const [ids, setIds] = useState([]);
 
   // function to handle checkbox
   const handleCheckbox = (e) => {

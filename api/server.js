@@ -1,10 +1,14 @@
 import express from "express";
 const app = express();
+import helmet from "helmet";
+import cors from "cors";
 
 const PORT = 8000;
 
 // middlewares
 app.use(express.json());
+app.use(helmet());
+app.use(cors());
 
 // database
 import { dbConnect } from "./src/config/dbConfig.js";
