@@ -69,7 +69,7 @@ router.get("/:_id?", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
 
     // query the db and store the data
     // tasks.push(req.body);
@@ -79,11 +79,16 @@ router.post("/", async (req, res, next) => {
 
     console.log(result);
 
-    res.json({
-      status: "success", // either success or error
-      message: "return from post method, tsk router", // message to be displayed
-      result,
-    });
+    result?._id
+      ? res.json({
+          status: "success", // either success or error
+          message: "The new task has been added", // message to be displayed
+        })
+      : res.json({
+          status: "success", // either success or error
+          message: "Sorry, the task cannot be added", // message to be displayed
+          result,
+        });
   } catch (error) {
     next(error);
   }

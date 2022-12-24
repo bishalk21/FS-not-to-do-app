@@ -3,7 +3,7 @@ import { Button, Container } from "react-bootstrap";
 import { AddTaskForm } from "./components/AddTaskForm";
 import { ListArea } from "./components/ListArea";
 import { useEffect, useState } from "react";
-import { fetchTasks } from "./helpers/axiosHelper";
+import { fetchTasks, postTask } from "./helpers/axiosHelper";
 
 const weeklyHour = 7 * 24;
 
@@ -22,7 +22,7 @@ function App() {
   const getTaskServer = async () => {
     const data = await fetchTasks();
     console.log(data);
-    data.success === "success" && setTasksList(data.result);
+    data.status === "success" && setTasksList(data.result);
   };
 
   // total hours of all tasklist - reduce
@@ -36,7 +36,12 @@ function App() {
       return;
     }
 
-    setTasksList([...tasksList, task]);
+    //local state - task added
+    // setTasksList([...tasksList, task]);
+
+    // sending data to the server
+    const result = postTask(task);
+    result.status === "success" && getTaskServer();
   };
 
   // console.log(tasksList);

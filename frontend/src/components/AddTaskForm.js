@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
   task: "",
@@ -28,7 +28,9 @@ export const AddTaskForm = ({ addTask }) => {
     e.preventDefault(); // prevent from browser to load
 
     // passing the tasks to app
-    addTask({ ...tasks, id: uuidv4() });
+    // no need now sending data to database where id will be assigned
+    // addTask({ ...tasks, id: uuidv4() });
+    addTask(tasks);
   };
 
   return (

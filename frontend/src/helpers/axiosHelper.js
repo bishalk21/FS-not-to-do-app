@@ -17,3 +17,16 @@ export const fetchTasks = async () => {
     };
   }
 };
+
+// add task
+export const postTask = async (task) => {
+  try {
+    const { data } = await axios.post(apiEp, task); // requires two args
+    return data;
+  } catch (error) {
+    return {
+      status: "error",
+      message: error.message,
+    };
+  }
+};
