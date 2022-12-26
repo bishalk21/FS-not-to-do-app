@@ -3,7 +3,12 @@ import { Button, Container } from "react-bootstrap";
 import { AddTaskForm } from "./components/AddTaskForm";
 import { ListArea } from "./components/ListArea";
 import { useEffect, useState } from "react";
-import { fetchTasks, postTask } from "./helpers/axiosHelper";
+import {
+  deleteServerTask,
+  fetchTasks,
+  postTask,
+  updateTask,
+} from "./helpers/axiosHelper";
 
 const weeklyHour = 7 * 24;
 
@@ -21,7 +26,7 @@ function App() {
   // getting task from db
   const getTaskServer = async () => {
     const data = await fetchTasks();
-    console.log(data);
+    // console.log(data);
     data.status === "success" && setTasksList(data.result);
   };
 
@@ -48,26 +53,32 @@ function App() {
   // After we receive the taskList we then use them in list area by passing as props
 
   // switch function to transfer task from entry to bad
-  const switchTask = (id, type) => {
-    // console.log(i, type);
+  // const switchTask = (id, type) => {
+  //   // console.log(i, type);
 
-    const switchArr = tasksList.map((item, index) => {
-      if (item.id === id) {
-        item.type = type;
-        // return (item.type = type);
-        // const dt = (item.type = type);
-        // return dt;
+  //   const switchArr = tasksList.map((item, index) => {
+  //     if (item.id === id) {
+  //       item.type = type;
+  //       // return (item.type = type);
+  //       // const dt = (item.type = type);
+  //       // return dt;
 
-        // return { ...item, type: type };
-      }
-      return item;
-    });
+  //       // return { ...item, type: type };
+  //     }
+  //     return item;
+  //   });
 
-    // logic of switch from entry to bad is
-    // if index of task is equal to i then change the type to bad
-    // else return the item
+  // logic of switch from entry to bad is
+  // if index of task is equal to i then change the type to bad
+  // else return the item
 
-    setTasksList(switchArr);
+  //   setTasksList(switchArr);
+  // };
+
+  const switchTask = async (_id, type) => {
+    const data = await updateTask({ _id, type });
+
+    data.status === "success" && getTaskServer();
   };
 
   // state for checkbox and selecting item in task list and deleting according to the checked item
@@ -93,7 +104,7 @@ function App() {
       tasksList.forEach((item) => {
         if (item.type === value) {
           // return item.id;
-          deleteIds.push(item.id);
+          deleteIds.push(item._id);
         }
       });
       if (checked) {
@@ -103,7 +114,7 @@ function App() {
       } else {
         // remove all entry list ids
         // console.log("remove");
-        const tempArrIds = ids.filter((id) => !deleteIds.includes(id));
+        const tempArrIds = ids.filter((_id) => !deleteIds.includes(_id));
         setIds(tempArrIds);
       }
       return;
@@ -115,21 +126,27 @@ function App() {
       setIds([...ids, value]);
     } else {
       // remove individual ids
-      const tempArrIds = ids.filter((id) => id !== value);
+      const tempArrIds = ids.filter((_id) => _id !== value);
       setIds(tempArrIds);
     }
   };
 
   // delete function
-  const deleteTask = () => {
+  const deleteTask = async () => {
     // confirm
     if (!window.confirm("Are you sure you want to delete?")) {
       return;
     }
 
-    const tempArr = tasksList.filter((item) => !ids.includes(item.id));
-    setTasksList(tempArr);
-    setIds([]);
+    // const tempArr = tasksList.filter((item) => !ids.includes(item.id));
+    // setTasksList(tempArr);
+    // setIds([]);
+
+    const data = await deleteServerTask(ids);
+    if (data.status === "success") {
+      getTaskServer();
+      setIds([]);
+    }
   };
 
   return (

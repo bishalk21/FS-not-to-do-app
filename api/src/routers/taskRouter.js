@@ -77,7 +77,7 @@ router.post("/", async (req, res, next) => {
     const result = await insertTask(req.body);
     // in execution - not pure js so waits in the mt queue
 
-    console.log(result);
+    // console.log(result);
 
     result?._id
       ? res.json({
@@ -96,12 +96,12 @@ router.post("/", async (req, res, next) => {
 
 router.patch("/", async (req, res, next) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     // query the db and update the data
     const { _id, type } = req.body;
 
     const result = await updateTask(_id, type);
-    console.log(result);
+    // console.log(result);
 
     res.json({
       status: "success", // either success or error
@@ -150,9 +150,10 @@ router.delete("/", async (req, res, next) => {
     // const result = await deleteTask(_id);
 
     // for multiple task delete by id
-    const { ids } = req.body;
+    // const { ids } = req.body;
+    const ids = req.body;
     const result = await deleteAllTask(ids);
-    console.log(result);
+    // console.log(result);
 
     res.json({
       status: "success", // either success or error
