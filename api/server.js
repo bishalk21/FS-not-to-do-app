@@ -1,9 +1,13 @@
+import "dotenv/config";
 import express from "express";
 const app = express();
 import helmet from "helmet";
 import cors from "cors";
+import path from "path";
 
-const PORT = 8000;
+// PORT
+// const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 // middlewares
 app.use(express.json());
@@ -18,6 +22,18 @@ import taskRouter from "./src/routers/taskRouter.js";
 
 app.use("/api/v1/task", taskRouter);
 
+// static content serve
+// - create absolute file path
+// - __dirname is a global variable
+// - path.resolve() is a method to create absolute path
+const __dirname = path.resolve();
+// - express.static() is to tell server to serve static files
+// - path.join() is a method to join path
+// - path.join(__dirname, "frontend", "build") is the absolute path to the frontend/build folder
+// - frontend/build is the folder that contains the static content
+// app.use(express.static(path.join(__dirname, "frontend", "build")));
+app.use(express.static(path.join(__dirname, "/frontend/build")));
+
 // entry or root url endpoint - server
 // app.use means use this middleware for all the routes
 app.use("/", (req, res) => {
@@ -26,11 +42,20 @@ app.use("/", (req, res) => {
   //     message: "Hi You hit the endpoint", // message to be displayed
   //   };
   //   res.json(jf);
-  const jf = {
-    status: "success", // either success or error
-    message: "Hi You hit the not to do api endpoint", // message to be displayed
-  };
-  res.json(jf);
+
+  // const jf = {
+  //   status: "success", // either success or error
+  //   message: "Hi You hit the not to do api endpoint", // message to be displayed
+  // };
+  // res.json(jf);
+
+  // static serving
+  // - sendFile() is a method to send file
+  // - path.join() is a method to join path
+  // - path.join(__dirname, "frontend", "build", "index.html") is the absolute path to the frontend/build/index.html file
+  // - frontend/build/index.html is the file that contains the static content
+  // res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
+  res.sendFile(path.join(__dirname, "/frontend/build/index.html"));
 });
 
 // global error handler
