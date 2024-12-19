@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
-import { addTodo } from "@/app/reducers-actions/todo/todoSlice";
+import { addTodo } from "@/redux/reducers-actions/todo/todoSlice";
 
 const AddTodo = () => {
   const [inputValue, setInputValue] = useState("");

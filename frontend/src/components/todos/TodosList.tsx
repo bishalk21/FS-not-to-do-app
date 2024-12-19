@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/app/store";
-import { deleteTodo } from "@/app/reducers-actions/todo/todoSlice";
+import { RootState } from "@/redux/store";
+import { deleteTodo } from "@/redux/reducers-actions/todo/todoSlice";
 // import { Todo } from "./NotTodoUI";
 
 // interface TodosListProps {
