@@ -51,8 +51,10 @@ const NotTodoUI: React.FC = () => {
 
   return (
     <>
-      <div className="flex justify-center flex-col items-center text-center">
+      <div className="h-full flex justify-center flex-col items-center text-center space-y-8">
+        <h1 className="text-4xl font-bold text-center">Task Management App</h1>
         <AddTodo />
+
         <TodosList />
       </div>
     </>
