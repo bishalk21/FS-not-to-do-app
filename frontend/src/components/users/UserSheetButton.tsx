@@ -22,8 +22,9 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { getUser, getUsers } from "@/axios/users/getUsers";
 import { User } from "@/types/user/user";
+import { userServices } from "@/axios/users/users";
+import { useMutation } from "@tanstack/react-query";
 
 const formUserSchema = z.object({
   name: z
@@ -39,10 +40,12 @@ type FormUserType = z.infer<typeof formUserSchema>;
 export const FormUI = ({
   setUsers,
   setOpen,
+  setEditOpen,
   id,
 }: {
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   id?: number;
 }) => {
   const [loading, setLoading] = useState(false);
@@ -56,15 +59,30 @@ export const FormUI = ({
       role: "",
     },
     values: {
-      name: user?.name,
-      email: user?.email,
-      role: user?.role,
+      name: user?.name || "",
+      email: user?.email || "",
+      role: user?.role || "",
+    },
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["users"],
+    mutationFn: userServices.createUser,
+    onSuccess: () => {
+      userServices.getUsers().then((users) => {
+        if (users) {
+          setUsers(users);
+        }
+      });
+    },
+    onError: (error) => {
+      console.error(error);
     },
   });
 
   async function fetchUsers() {
     try {
-      const users = await getUsers();
+      const users = await userServices.getUsers();
       setUsers(users || []);
     } catch (error) {
       console.error(error);
@@ -80,14 +98,17 @@ export const FormUI = ({
           values
         );
       } else {
-        await axios.post(
-          "https://65cd2654dd519126b8402f85.mockapi.io/users",
-          values
-        );
+        // await axios.post(
+        //   "https://65cd2654dd519126b8402f85.mockapi.io/users",
+        //   values
+        // );
+        await mutate({ ...values, role: values.role || "" });
       }
 
       form.reset();
-      setOpen(false);
+
+      setOpen?.(false);
+      setEditOpen?.(false);
       await fetchUsers();
       setLoading(false);
     } catch (error) {
@@ -97,7 +118,7 @@ export const FormUI = ({
 
   async function getSingleUser() {
     if (id) {
-      const data = await getUser(id);
+      const data = await userServices.getUser(id);
       if (data) {
         setUser(data);
       }
@@ -188,13 +209,10 @@ export const FormUI = ({
 };
 export const UserSheetButton = ({
   setUsers,
-  open,
-  setOpen,
 }: {
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const [open, setOpen] = useState(false);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
